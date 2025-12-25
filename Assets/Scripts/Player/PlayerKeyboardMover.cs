@@ -1,46 +1,33 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/**
- * Keyboard-only player movement using InputAction.
- * Arrow keys by default, bindings editable in Inspector.
- */
 [RequireComponent(typeof(CharacterController))]
 public class PlayerKeyboardMover : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed = 5f;
+    public float moveSpeed = 6f;
+    public float gravity = -9.81f;
+    private Vector3 velocity;
 
     [SerializeField]
-    protected InputAction moveAction;
+    private InputAction moveAction;
 
     private CharacterController controller;
 
-    void OnValidate()
+    void Awake()
     {
-        // Create action if missing
-        if (moveAction == null)
-            moveAction = new InputAction(type: InputActionType.Value);
+        controller = GetComponent<CharacterController>();
 
-        // Provide default arrow-key bindings
-        if (moveAction.bindings.Count == 0)
+        if (moveAction == null)
         {
-            moveAction
-                .AddCompositeBinding("2DVector")
+            moveAction = new InputAction("Move", InputActionType.Value, binding: "");
+            moveAction.AddCompositeBinding("2DVector")
                 .With("Up", "<Keyboard>/upArrow")
                 .With("Down", "<Keyboard>/downArrow")
                 .With("Left", "<Keyboard>/leftArrow")
                 .With("Right", "<Keyboard>/rightArrow");
         }
-    }
 
-    void Awake()
-    {
-        controller = GetComponent<CharacterController>();
-    }
-
-    void OnEnable()
-    {
         moveAction.Enable();
     }
 
@@ -52,15 +39,14 @@ public class PlayerKeyboardMover : MonoBehaviour
     void Update()
     {
         Vector2 input = moveAction.ReadValue<Vector2>();
-
-        Vector3 move = new Vector3(input.x, 0f, input.y);
-
-        if (move.sqrMagnitude > 0.001f)
+        if (input.sqrMagnitude > 0.01f)
         {
-            // Face movement direction
-            transform.forward = move.normalized;
+            Vector3 move = transform.right * input.x + transform.forward * input.y;
+            controller.Move(move * moveSpeed * Time.deltaTime);
         }
 
-        controller.Move(move * moveSpeed * Time.deltaTime);
+        // Apply gravity
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
     }
 }
