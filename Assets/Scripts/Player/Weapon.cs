@@ -11,6 +11,12 @@ public class Weapon : MonoBehaviour
     [Header("References")]
     public Transform firePoint;
 
+    [Header("Effects")]
+    public GameObject bulletPrefab;
+    public Transform bulletSpawnPoint;
+    public float bulletVelocity = 30f;
+    public float bulletLifetime = 3f;
+
     private float nextFireTime;
 
     public void TryFire()
@@ -25,6 +31,7 @@ public class Weapon : MonoBehaviour
     {
         if (firePoint == null) return;
 
+        SpawnBullet();
         if (Physics.Raycast(
             firePoint.position,
             firePoint.forward,
@@ -36,5 +43,34 @@ public class Weapon : MonoBehaviour
                 enemy.TakeDamage(damage);
             }
         }
+    }
+    // void Update()
+    // {
+    //     if(bulletPrefab == null || bulletSpawnPoint == null) return;
+
+    //     if(automatic)
+    //     {
+    //         if (Input.GetKey(KeyCode.Space))
+    //         {
+    //             SpawnBullet();
+    //         }
+    //     }
+    //     else
+    //     {
+    //         if (Input.GetKeyDown(KeyCode.Space))
+    //         {
+    //             SpawnBullet();
+    //         }
+    //     }
+    // }
+    void SpawnBullet()
+    {
+        Debug.Log("Spawning Bullet");
+        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+        if (bullet.TryGetComponent<Rigidbody>(out var rb))
+        {
+            rb.linearVelocity = bulletSpawnPoint.forward * bulletVelocity;
+        }
+        Destroy(bullet, bulletLifetime);
     }
 }
