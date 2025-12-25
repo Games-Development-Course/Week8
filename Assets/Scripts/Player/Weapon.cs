@@ -65,7 +65,6 @@ public class Weapon : MonoBehaviour
     // }
     void SpawnBullet()
     {
-        Debug.Log("Spawning Bullet");
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         if (bullet.TryGetComponent<Rigidbody>(out var rb))
         {
