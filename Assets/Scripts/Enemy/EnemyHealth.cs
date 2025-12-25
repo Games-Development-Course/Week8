@@ -1,8 +1,11 @@
 using UnityEngine;
+using System;
 
 public class EnemyHealth : MonoBehaviour
 {
     public int health = 30;
+
+    public Action onDeath;
 
     public void TakeDamage(int damage)
     {
@@ -14,6 +17,7 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
+        onDeath?.Invoke();
         Destroy(gameObject);
     }
 }
