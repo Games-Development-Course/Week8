@@ -124,11 +124,7 @@ public class MazeGenerator3D : MonoBehaviour
     // ============================================================
     void CreateGround()
     {
-        if (groundPrefab == null)
-        {
-            Debug.LogWarning("Ground Prefab is not assigned.");
-            return;
-        }
+        if (groundPrefab == null) return;
 
         GameObject ground = Instantiate(groundPrefab);
         ground.name = "Ground";
@@ -137,8 +133,6 @@ public class MazeGenerator3D : MonoBehaviour
         float groundWidth = width * cellSize;
         float groundHeight = height * cellSize;
 
-        Debug.Log($"Ground Size: Width={groundWidth}, Height={groundHeight}");
-
         ground.transform.localPosition = new Vector3(
             (groundWidth / 2f) - (cellSize / 2f),
             0,
@@ -146,10 +140,12 @@ public class MazeGenerator3D : MonoBehaviour
         );
 
         ground.transform.localScale = new Vector3(
-            groundWidth,
+            groundWidth / 10f,
             1,
-            groundHeight
+            groundHeight / 10f
         );
+
+        Debug.Log($"Ground Size: Width={groundWidth}, Height={groundHeight}");
     }
 
     // ============================================================
