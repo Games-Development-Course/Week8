@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
+    [Header("Aiming")]
+    public float shootHeight = 1.2f;
+    public float targetHeight = 1.2f;
+
     [Header("Visuals")]
     public ShotTracer shotTracerPrefab;
 
@@ -32,14 +36,17 @@ public class EnemyAI : MonoBehaviour
             if (Time.time >= nextFireTime)
             {
                 nextFireTime = Time.time + fireInterval;
-                Shoot(dir.normalized);
+                Shoot();
             }
         }
     }
 
-    void Shoot(Vector3 dir)
+    void Shoot()
     {
-        Vector3 start = transform.position + Vector3.up;
+        Vector3 start = transform.position + Vector3.up * shootHeight;
+        Vector3 target = player.position + Vector3.up * targetHeight;
+
+        Vector3 dir = (target - start).normalized;
         Vector3 end = start + dir * attackRange;
 
         if (Physics.Raycast(start, dir, out RaycastHit hit, attackRange))
@@ -52,12 +59,13 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        // VISUAL TRACER
+        // Visual tracer
         if (shotTracerPrefab != null)
         {
             ShotTracer tracer = Instantiate(shotTracerPrefab);
             tracer.Init(start, end);
         }
     }
+
 
 }
