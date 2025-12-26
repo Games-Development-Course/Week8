@@ -29,20 +29,19 @@ public class EnemySpawner : MonoBehaviour
     private HashSet<Vector2Int> blockedCells = new();
 
     IEnumerator Start()
-{
-    if (maze == null || enemyPrefab == null || player == null)
     {
-        Debug.LogError("EnemySpawner not configured correctly");
-        yield break;
+        if (maze == null || enemyPrefab == null || player == null)
+        {
+            Debug.LogError("EnemySpawner not configured correctly");
+            yield break;
+        }
+
+        // WAIT until maze is fully generated
+        while (!maze.IsReady)
+            yield return null;
+
+        SpawnEnemies();
     }
-
-    // WAIT until maze is fully generated
-    while (!maze.IsReady)
-        yield return null;
-
-    SpawnEnemies();
-}
-
 
     void SpawnEnemies()
     {
