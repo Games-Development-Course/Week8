@@ -164,16 +164,14 @@ public class MazeGenerator3D : MonoBehaviour
         Vector2Int cell = pathCells[Random.Range(0, pathCells.Count)];
         return new Vector3(cell.x * cellSize, y, cell.y * cellSize);
     }
+
     public bool IsWall(Vector2Int cell)
-{
-    if (grid == null)
-        return true;
+    {
+        if (grid == null)
+            return true;
 
-    if (cell.x < 0 || cell.y < 0 || cell.x >= width || cell.y >= height)
-        return true;
-
-    return grid[cell.x, cell.y];
-}
-
-
+        if (cell.x < 0 || cell.y < 0 || cell.x >= width || cell.y >= height)
+            return true;
+        return grid[cell.x, cell.y];
+    }
 }
