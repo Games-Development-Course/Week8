@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14e31b6fe5c9642b58393ef4b1db0609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  shotTracerPrefab: {fileID: -7848808526228129485, guid: 7ceb98947241c4496a35c1d0f486ff46, type: 3}
   attackRange: 10
   fireInterval: 1.5
   damage: 10

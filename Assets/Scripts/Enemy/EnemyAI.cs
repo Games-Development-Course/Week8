@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
+    [Header("Visuals")]
+    public ShotTracer shotTracerPrefab;
+
+    [Header("Stats")]
     public float attackRange = 10f;
     public float fireInterval = 1.5f;
     public int damage = 10;
@@ -35,16 +39,25 @@ public class EnemyAI : MonoBehaviour
 
     void Shoot(Vector3 dir)
     {
-        if (Physics.Raycast(
-            transform.position + Vector3.up,
-            dir,
-            out RaycastHit hit,
-            attackRange))
+        Vector3 start = transform.position + Vector3.up;
+        Vector3 end = start + dir * attackRange;
+
+        if (Physics.Raycast(start, dir, out RaycastHit hit, attackRange))
         {
+            end = hit.point;
+
             if (hit.collider.TryGetComponent<PlayerHealth>(out var health))
             {
                 health.TakeDamage(damage);
             }
         }
+
+        // VISUAL TRACER
+        if (shotTracerPrefab != null)
+        {
+            ShotTracer tracer = Instantiate(shotTracerPrefab);
+            tracer.Init(start, end);
+        }
     }
+
 }
