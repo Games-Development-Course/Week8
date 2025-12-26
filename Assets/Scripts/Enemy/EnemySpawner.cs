@@ -13,6 +13,8 @@ using UnityEngine.SceneManagement;
  */
 public class EnemySpawner : MonoBehaviour
 {
+    public WinScreenController winScreen;
+
     [Header("References")]
     public MazeGenerator3D maze;
     public GameObject enemyPrefab;
@@ -134,8 +136,11 @@ public class EnemySpawner : MonoBehaviour
     void WinGame()
     {
         Debug.Log("YOU WIN!");
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        if (winScreen != null)
+            winScreen.ShowWinScreen();
     }
+
 
     // ============================================================
     // SAME SAFETY LOGIC AS ResourcePlacement

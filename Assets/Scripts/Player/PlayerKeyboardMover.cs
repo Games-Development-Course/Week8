@@ -51,6 +51,11 @@ public class PlayerKeyboardMover : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0f)
+        {
+            return;
+        }
+
         Vector2 input = moveAction.ReadValue<Vector2>();
 
         // FORWARD / BACKWARD
